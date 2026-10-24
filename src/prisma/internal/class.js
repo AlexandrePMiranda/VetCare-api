@@ -1,0 +1,75 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getPrismaClientClass = getPrismaClientClass;
+const runtime = __importStar(require("@prisma/client/runtime/client"));
+const config = {
+    "previewFeatures": [],
+    "clientVersion": "7.10.1",
+    "engineVersion": "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
+    "activeProvider": "postgresql",
+    "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum profile {\n  ADMIN\n  RECEP\n  VET\n}\n\nenum sex {\n  MALE\n  FEMALE\n}\n\nmodel User {\n  id       String  @id @default(uuid())\n  email    String  @unique\n  password String\n  profile  profile @default(RECEP)\n\n  vets Vet?\n}\n\nmodel Vet {\n  id     String @id @default(uuid())\n  name   String\n  crmv   String @unique\n  cpf    String @unique\n  userId String @unique\n  user   User   @relation(fields: [userId], references: [id])\n}\n\nmodel Animal {\n  id      String   @id @default(uuid())\n  species String\n  breed   String\n  sex     sex\n  birth   DateTime @db.Date\n  tutorId String   @unique\n  tutor   Tutor    @relation(fields: [tutorId], references: [id])\n}\n\nmodel Tutor {\n  id      String   @id @default(uuid())\n  name    String\n  email   String   @unique\n  phone   String[]\n  adress  String\n  cpf     String   @unique\n  animals Animal[]\n}\n",
+    "runtimeDataModel": {
+        "models": {},
+        "enums": {},
+        "types": {}
+    },
+    "parameterizationSchema": {
+        "strings": [],
+        "graph": ""
+    }
+};
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"profile\",\"kind\":\"enum\",\"type\":\"profile\"},{\"name\":\"vets\",\"kind\":\"object\",\"type\":\"Vet\",\"relationName\":\"UserToVet\"}],\"dbName\":null,\"schema\":null},\"Vet\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"crmv\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cpf\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"UserToVet\"}],\"dbName\":null,\"schema\":null},\"Animal\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"species\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"breed\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"sex\",\"kind\":\"enum\",\"type\":\"sex\"},{\"name\":\"birth\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"tutorId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"tutor\",\"kind\":\"object\",\"type\":\"Tutor\",\"relationName\":\"AnimalToTutor\"}],\"dbName\":null,\"schema\":null},\"Tutor\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"adress\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cpf\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"animals\",\"kind\":\"object\",\"type\":\"Animal\",\"relationName\":\"AnimalToTutor\"}],\"dbName\":null,\"schema\":null}},\"enums\":{},\"types\":{}}");
+config.parameterizationSchema = {
+    strings: JSON.parse("[\"where\",\"user\",\"vets\",\"User.findUnique\",\"User.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"User.findFirst\",\"User.findFirstOrThrow\",\"User.findMany\",\"data\",\"User.createOne\",\"User.createMany\",\"User.createManyAndReturn\",\"User.updateOne\",\"User.updateMany\",\"User.updateManyAndReturn\",\"create\",\"update\",\"User.upsertOne\",\"User.deleteOne\",\"User.deleteMany\",\"having\",\"_count\",\"_min\",\"_max\",\"User.groupBy\",\"User.aggregate\",\"Vet.findUnique\",\"Vet.findUniqueOrThrow\",\"Vet.findFirst\",\"Vet.findFirstOrThrow\",\"Vet.findMany\",\"Vet.createOne\",\"Vet.createMany\",\"Vet.createManyAndReturn\",\"Vet.updateOne\",\"Vet.updateMany\",\"Vet.updateManyAndReturn\",\"Vet.upsertOne\",\"Vet.deleteOne\",\"Vet.deleteMany\",\"Vet.groupBy\",\"Vet.aggregate\",\"animals\",\"tutor\",\"Animal.findUnique\",\"Animal.findUniqueOrThrow\",\"Animal.findFirst\",\"Animal.findFirstOrThrow\",\"Animal.findMany\",\"Animal.createOne\",\"Animal.createMany\",\"Animal.createManyAndReturn\",\"Animal.updateOne\",\"Animal.updateMany\",\"Animal.updateManyAndReturn\",\"Animal.upsertOne\",\"Animal.deleteOne\",\"Animal.deleteMany\",\"Animal.groupBy\",\"Animal.aggregate\",\"Tutor.findUnique\",\"Tutor.findUniqueOrThrow\",\"Tutor.findFirst\",\"Tutor.findFirstOrThrow\",\"Tutor.findMany\",\"Tutor.createOne\",\"Tutor.createMany\",\"Tutor.createManyAndReturn\",\"Tutor.updateOne\",\"Tutor.updateMany\",\"Tutor.updateManyAndReturn\",\"Tutor.upsertOne\",\"Tutor.deleteOne\",\"Tutor.deleteMany\",\"Tutor.groupBy\",\"Tutor.aggregate\",\"AND\",\"OR\",\"NOT\",\"id\",\"name\",\"email\",\"phone\",\"adress\",\"cpf\",\"equals\",\"has\",\"hasEvery\",\"hasSome\",\"in\",\"notIn\",\"lt\",\"lte\",\"gt\",\"gte\",\"contains\",\"startsWith\",\"endsWith\",\"not\",\"every\",\"some\",\"none\",\"species\",\"breed\",\"sex\",\"birth\",\"tutorId\",\"crmv\",\"userId\",\"password\",\"profile\",\"is\",\"isNot\",\"connectOrCreate\",\"upsert\",\"createMany\",\"set\",\"disconnect\",\"delete\",\"connect\",\"updateMany\",\"deleteMany\",\"push\"]"),
+    graph: "vwEiQAgCAACFAQAgTgAAgwEAME8AAAYAEFAAAIMBADBRAQAAAAFTAQAAAAFvAQBvACFwAACEAXEiAQAAAAEAIAkBAAB-ACBOAAB9ADBPAAADABBQAAB9ADBRAQBvACFSAQBvACFWAQBvACFtAQBvACFuAQBvACEBAAAAAwAgAQAAAAEAIAgCAACFAQAgTgAAgwEAME8AAAYAEFAAAIMBADBRAQBvACFTAQBvACFvAQBvACFwAACEAXEiAQIAALQBACADAAAABgAgBQAABwAwBgAAAQAgAwAAAAYAIAUAAAcAMAYAAAEAIAMAAAAGACAFAAAHADAGAAABACAFAgAAswEAIFEBAAAAAVMBAAAAAW8BAAAAAXAAAABxAgEKAAALACAEUQEAAAABUwEAAAABbwEAAAABcAAAAHECAQoAAA0AMAEKAAANADAFAgAArQEAIFEBAIkBACFTAQCJAQAhbwEAiQEAIXAAAKwBcSICAAAAAQAgCgAAEAAgBFEBAIkBACFTAQCJAQAhbwEAiQEAIXAAAKwBcSICAAAABgAgCgAAEgAgAgAAAAYAIAoAABIAIAMAAAABACARAAALACASAAAQACABAAAAAQAgAQAAAAYAIAMXAACpAQAgGAAAqwEAIBkAAKoBACAHTgAAfwAwTwAAGQAQUAAAfwAwUQEAaQAhUwEAaQAhbwEAaQAhcAAAgAFxIgMAAAAGACAFAAAYADAWAAAZACADAAAABgAgBQAABwAwBgAAAQAgCQEAAH4AIE4AAH0AME8AAAMAEFAAAH0AMFEBAAAAAVIBAG8AIVYBAAAAAW0BAAAAAW4BAAAAAQEAAAAcACABAAAAHAAgAQEAAKgBACADAAAAAwAgBQAAHwAwBgAAHAAgAwAAAAMAIAUAAB8AMAYAABwAIAMAAAADACAFAAAfADAGAAAcACAGAQAApwEAIFEBAAAAAVIBAAAAAVYBAAAAAW0BAAAAAW4BAAAAAQEKAAAjACAFUQEAAAABUgEAAAABVgEAAAABbQEAAAABbgEAAAABAQoAACUAMAEKAAAlADAGAQAApgEAIFEBAIkBACFSAQCJAQAhVgEAiQEAIW0BAIkBACFuAQCJAQAhAgAAABwAIAoAACgAIAVRAQCJAQAhUgEAiQEAIVYBAIkBACFtAQCJAQAhbgEAiQEAIQIAAAADACAKAAAqACACAAAAAwAgCgAAKgAgAwAAABwAIBEAACMAIBIAACgAIAEAAAAcACABAAAAAwAgAxcAAKMBACAYAAClAQAgGQAApAEAIAhOAAB8ADBPAAAxABBQAAB8ADBRAQBpACFSAQBpACFWAQBpACFtAQBpACFuAQBpACEDAAAAAwAgBQAAMAAwFgAAMQAgAwAAAAMAIAUAAB8AMAYAABwAIAotAAB7ACBOAAB4ADBPAAA2ABBQAAB4ADBRAQAAAAFoAQBvACFpAQBvACFqAAB5ayJrQAB6ACFsAQAAAAEBAAAANAAgCi0AAHsAIE4AAHgAME8AADYAEFAAAHgAMFEBAG8AIWgBAG8AIWkBAG8AIWoAAHlrImtAAHoAIWwBAG8AIQEtAACiAQAgAwAAADYAIAUAADcAMAYAADQAIAEAAAA2ACABAAAANAAgAwAAADYAIAUAADcAMAYAADQAIAMAAAA2ACAFAAA3ADAGAAA0ACADAAAANgAgBQAANwAwBgAANAAgBy0AAKEBACBRAQAAAAFoAQAAAAFpAQAAAAFqAAAAawJrQAAAAAFsAQAAAAEBCgAAPgAgBlEBAAAAAWgBAAAAAWkBAAAAAWoAAABrAmtAAAAAAWwBAAAAAQEKAABAADABCgAAQAAwBy0AAKABACBRAQCJAQAhaAEAiQEAIWkBAIkBACFqAACWAWsia0AAlwEAIWwBAIkBACECAAAANAAgCgAAQwAgBlEBAIkBACFoAQCJAQAhaQEAiQEAIWoAAJYBayJrQACXAQAhbAEAiQEAIQIAAAA2ACAKAABFACACAAAANgAgCgAARQAgAwAAADQAIBEAAD4AIBIAAEMAIAEAAAA0ACABAAAANgAgAxcAAJ0BACAYAACfAQAgGQAAngEAIAlOAABxADBPAABMABBQAABxADBRAQBpACFoAQBpACFpAQBpACFqAAByayJrQABzACFsAQBpACEDAAAANgAgBQAASwAwFgAATAAgAwAAADYAIAUAADcAMAYAADQAIAosAABwACBOAABuADBPAABSABBQAABuADBRAQAAAAFSAQBvACFTAQAAAAFUAABqACBVAQBvACFWAQAAAAEBAAAATwAgAQAAAE8AIAosAABwACBOAABuADBPAABSABBQAABuADBRAQBvACFSAQBvACFTAQBvACFUAABqACBVAQBvACFWAQBvACEBLAAAnAEAIAMAAABSACAFAABTADAGAABPACADAAAAUgAgBQAAUwAwBgAATwAgAwAAAFIAIAUAAFMAMAYAAE8AIAcsAACbAQAgUQEAAAABUgEAAAABUwEAAAABVAAAmgEAIFUBAAAAAVYBAAAAAQEKAABXACAGUQEAAAABUgEAAAABUwEAAAABVAAAmgEAIFUBAAAAAVYBAAAAAQEKAABZADABCgAAWQAwBywAAIsBACBRAQCJAQAhUgEAiQEAIVMBAIkBACFUAACKAQAgVQEAiQEAIVYBAIkBACECAAAATwAgCgAAXAAgBlEBAIkBACFSAQCJAQAhUwEAiQEAIVQAAIoBACBVAQCJAQAhVgEAiQEAIQIAAABSACAKAABeACACAAAAUgAgCgAAXgAgAwAAAE8AIBEAAFcAIBIAAFwAIAEAAABPACABAAAAUgAgAxcAAIYBACAYAACIAQAgGQAAhwEAIAlOAABoADBPAABlABBQAABoADBRAQBpACFSAQBpACFTAQBpACFUAABqACBVAQBpACFWAQBpACEDAAAAUgAgBQAAZAAwFgAAZQAgAwAAAFIAIAUAAFMAMAYAAE8AIAlOAABoADBPAABlABBQAABoADBRAQBpACFSAQBpACFTAQBpACFUAABqACBVAQBpACFWAQBpACEOFwAAbAAgGAAAbQAgGQAAbQAgVwEAAAABWwEAAAAEXAEAAAAEXQEAAAABXgEAAAABXwEAAAABYAEAAAABYQEAAAABYgEAAAABYwEAAAABZAEAawAhBFcBAAAABVgBAAAAAVkBAAAABFoBAAAABA4XAABsACAYAABtACAZAABtACBXAQAAAAFbAQAAAARcAQAAAARdAQAAAAFeAQAAAAFfAQAAAAFgAQAAAAFhAQAAAAFiAQAAAAFjAQAAAAFkAQBrACEIVwIAAAABWwIAAAAEXAIAAAAEXQIAAAABXgIAAAABXwIAAAABYAIAAAABZAIAbAAhC1cBAAAAAVsBAAAABFwBAAAABF0BAAAAAV4BAAAAAV8BAAAAAWABAAAAAWEBAAAAAWIBAAAAAWMBAAAAAWQBAG0AIQosAABwACBOAABuADBPAABSABBQAABuADBRAQBvACFSAQBvACFTAQBvACFUAABqACBVAQBvACFWAQBvACELVwEAAAABWwEAAAAEXAEAAAAEXQEAAAABXgEAAAABXwEAAAABYAEAAAABYQEAAAABYgEAAAABYwEAAAABZAEAbQAhA2UAADYAIGYAADYAIGcAADYAIAlOAABxADBPAABMABBQAABxADBRAQBpACFoAQBpACFpAQBpACFqAAByayJrQABzACFsAQBpACEHFwAAbAAgGAAAdwAgGQAAdwAgVwAAAGsCWwAAAGsIXAAAAGsIZAAAdmsiCxcAAGwAIBgAAHUAIBkAAHUAIFdAAAAAAVtAAAAABFxAAAAABF1AAAAAAV5AAAAAAV9AAAAAAWBAAAAAAWRAAHQAIQsXAABsACAYAAB1ACAZAAB1ACBXQAAAAAFbQAAAAARcQAAAAARdQAAAAAFeQAAAAAFfQAAAAAFgQAAAAAFkQAB0ACEIV0AAAAABW0AAAAAEXEAAAAAEXUAAAAABXkAAAAABX0AAAAABYEAAAAABZEAAdQAhBxcAAGwAIBgAAHcAIBkAAHcAIFcAAABrAlsAAABrCFwAAABrCGQAAHZrIgRXAAAAawJbAAAAawhcAAAAawhkAAB3ayIKLQAAewAgTgAAeAAwTwAANgAQUAAAeAAwUQEAbwAhaAEAbwAhaQEAbwAhagAAeWsia0AAegAhbAEAbwAhBFcAAABrAlsAAABrCFwAAABrCGQAAHdrIghXQAAAAAFbQAAAAARcQAAAAARdQAAAAAFeQAAAAAFfQAAAAAFgQAAAAAFkQAB1ACEMLAAAcAAgTgAAbgAwTwAAUgAQUAAAbgAwUQEAbwAhUgEAbwAhUwEAbwAhVAAAagAgVQEAbwAhVgEAbwAhcQAAUgAgcgAAUgAgCE4AAHwAME8AADEAEFAAAHwAMFEBAGkAIVIBAGkAIVYBAGkAIW0BAGkAIW4BAGkAIQkBAAB-ACBOAAB9ADBPAAADABBQAAB9ADBRAQBvACFSAQBvACFWAQBvACFtAQBvACFuAQBvACEKAgAAhQEAIE4AAIMBADBPAAAGABBQAACDAQAwUQEAbwAhUwEAbwAhbwEAbwAhcAAAhAFxInEAAAYAIHIAAAYAIAdOAAB_ADBPAAAZABBQAAB_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"
+};
+async function decodeBase64AsWasm(wasmBase64) {
+    const { Buffer } = await import('node:buffer');
+    const wasmArray = Buffer.from(wasmBase64, 'base64');
+    return new WebAssembly.Module(wasmArray);
+}
+config.compilerWasm = {
+    getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.js"),
+    getQueryCompilerWasmModule: async () => {
+        const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.js");
+        return await decodeBase64AsWasm(wasm);
+    },
+    importName: "./query_compiler_fast_bg.js"
+};
+function getPrismaClientClass() {
+    return runtime.getPrismaClient(config);
+}
+//# sourceMappingURL=class.js.map

@@ -4,7 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthModule } from './auth/auth.module';
+import { PrismaModule } from './prisma/prisma.module';
+import { TutorsModule } from './tutors/tutors.module';
+import { VetsModule } from './vets/vets.module';
+
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -20,6 +23,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     }),
     UsersModule,
     AuthModule,
+    VetsModule,
+    TutorsModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
