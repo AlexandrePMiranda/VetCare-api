@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
@@ -29,18 +29,35 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.usersRepository.getAllUsers();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+
+    const user = await this.usersRepository.findById(id);
+
+    if(!user){
+      throw new BadRequestException('Usuário não existe')
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.usersRepository.findById(id);
+
+    if(!user){
+      throw new BadRequestException('Usuário não existe')
+    }
+    return await this.usersRepository.update(user.id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.usersRepository.findById(id);
+
+    if(!user){
+      console.log(user)
+      throw new BadRequestException('Usuário não existe')
+    }
+    return await this.usersRepository.delete(id);
   }
 }

@@ -15,25 +15,31 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
- @UseGuards(AuthGuard('jwt'), ProfileGuard)
- @Roles('VET') 
+  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @Roles('ADMIN') 
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
-
+  
+  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @Roles('ADMIN') 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
+  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @Roles('ADMIN') 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
+  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @Roles('ADMIN') 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

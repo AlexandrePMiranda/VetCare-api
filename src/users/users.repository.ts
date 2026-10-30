@@ -24,4 +24,12 @@ export class UsersRepository {
   async findById(id: string) {
     return this.prisma.user.findUnique({ where: { id: id } });
   }
+
+  async update(id: string, data: Prisma.UserUpdateInput){
+    return this.prisma.user.update({where: {id: id}, data: data })
+  }
+
+  async delete(id: string){
+    return this.prisma.user.delete({where:{id:id}})
+  }
 }
