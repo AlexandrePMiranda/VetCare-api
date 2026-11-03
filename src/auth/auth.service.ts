@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -19,7 +19,9 @@ export class AuthService {
     if (!usuario) {
       throw new UnauthorizedException('e-mail e/ou senha incorretos.');
     }
-
+    if (!usuario.password){
+      throw new BadRequestException;
+    }
     const senhaValida = await bcrypt.compare(
       credenciais.password,
       usuario.password,
@@ -32,7 +34,7 @@ export class AuthService {
     const payload = {
       sub: usuario.id,
       email: usuario.email,
-      profile: usuario.profile,
+      role: usuario.role,
     };
 
     const accessToken = this.jwtService.sign(payload);

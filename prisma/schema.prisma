@@ -5,58 +5,83 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-enum profile {
+enum Role {
   ADMIN
   RECEP
   VET
 }
 
-enum sex {
-  MALE
-  FEMALE
+enum Sex {
+  M
+  F
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING_INVITE
+  DEACTIVATED
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  password String
-  profile  profile @default(RECEP)
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  password     String?
+  role         Role       @default(RECEP)
+  status       UserStatus @default(PENDING_INVITE)
+  lastAccessAt DateTime?
+  inviteSentAt DateTime?
+  createdAt    DateTime   @default(now())
 
-  vets Vet?
+  vet Vet?
 }
 
 model Vet {
-  id     String @id @default(uuid())
-  name   String
-  crmv   String @unique
-  cpf    String @unique
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  id        String    @id @default(uuid())
+  crmv      String    @unique
+  cpf       String    @unique
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@index([deletedAt])
 }
 
-model Animal {
-  id      String   @id @default(uuid())
-  species String
-  breed   String
-  sex     sex
-  birth   DateTime @db.Date
-  tutorId String   @unique
-  tutor   Tutor    @relation(fields: [tutorId], references: [id])
+model PetOwner {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  phone     String
+  address   String
+  cpf       String    @unique
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+  pets      Pet[]
+
+  @@index([deletedAt])
 }
 
-model Tutor {
-  id      String   @id @default(uuid())
-  name    String
-  email   String   @unique
-  phone   String[]
-  adress  String
-  cpf     String   @unique
-  animals Animal[]
+model Pet {
+  id         String    @id @default(uuid())
+  name       String
+  species    String
+  breed      String
+  sex        Sex
+  birthDate  DateTime  @db.Date
+  weight     Float?
+  notes      String?
+  createdAt  DateTime  @default(now())
+  deletedAt  DateTime?
+  petOwnerId String
+  petOwner   PetOwner  @relation(fields: [petOwnerId], references: [id])
+
+  @@index([deletedAt])
 }

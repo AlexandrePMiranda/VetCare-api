@@ -3,8 +3,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileGuard } from '../auth/guards/profile.guard';
-import { Roles } from '../auth/decorator/profiles.decorator';
+import { Roles } from '../auth/decorator/role.decorator';
+import { RolesGuard } from '../auth/guards/role.guard';
 
 @Controller('users')
 export class UsersController {
@@ -15,28 +15,28 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN') 
   @Get()
   findAll() {
     return this.usersService.findAll();
   }
   
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN') 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN') 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN') 
   @Delete(':id')
   remove(@Param('id') id: string) {

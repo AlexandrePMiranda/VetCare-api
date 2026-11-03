@@ -26,25 +26,28 @@ export type AggregateVet = {
 
 export type VetMinAggregateOutputType = {
   id: string | null
-  name: string | null
   crmv: string | null
   cpf: string | null
+  createdAt: Date | null
+  deletedAt: Date | null
   userId: string | null
 }
 
 export type VetMaxAggregateOutputType = {
   id: string | null
-  name: string | null
   crmv: string | null
   cpf: string | null
+  createdAt: Date | null
+  deletedAt: Date | null
   userId: string | null
 }
 
 export type VetCountAggregateOutputType = {
   id: number
-  name: number
   crmv: number
   cpf: number
+  createdAt: number
+  deletedAt: number
   userId: number
   _all: number
 }
@@ -52,25 +55,28 @@ export type VetCountAggregateOutputType = {
 
 export type VetMinAggregateInputType = {
   id?: true
-  name?: true
   crmv?: true
   cpf?: true
+  createdAt?: true
+  deletedAt?: true
   userId?: true
 }
 
 export type VetMaxAggregateInputType = {
   id?: true
-  name?: true
   crmv?: true
   cpf?: true
+  createdAt?: true
+  deletedAt?: true
   userId?: true
 }
 
 export type VetCountAggregateInputType = {
   id?: true
-  name?: true
   crmv?: true
   cpf?: true
+  createdAt?: true
+  deletedAt?: true
   userId?: true
   _all?: true
 }
@@ -149,9 +155,10 @@ export type VetGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 export type VetGroupByOutputType = {
   id: string
-  name: string
   crmv: string
   cpf: string
+  createdAt: Date
+  deletedAt: Date | null
   userId: string
   _count: VetCountAggregateOutputType | null
   _min: VetMinAggregateOutputType | null
@@ -178,18 +185,20 @@ export type VetWhereInput = {
   OR?: Prisma.VetWhereInput[]
   NOT?: Prisma.VetWhereInput | Prisma.VetWhereInput[]
   id?: Prisma.StringFilter<"Vet"> | string
-  name?: Prisma.StringFilter<"Vet"> | string
   crmv?: Prisma.StringFilter<"Vet"> | string
   cpf?: Prisma.StringFilter<"Vet"> | string
+  createdAt?: Prisma.DateTimeFilter<"Vet"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Vet"> | Date | string | null
   userId?: Prisma.StringFilter<"Vet"> | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type VetOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   crmv?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -202,15 +211,17 @@ export type VetWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.VetWhereInput | Prisma.VetWhereInput[]
   OR?: Prisma.VetWhereInput[]
   NOT?: Prisma.VetWhereInput | Prisma.VetWhereInput[]
-  name?: Prisma.StringFilter<"Vet"> | string
+  createdAt?: Prisma.DateTimeFilter<"Vet"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableFilter<"Vet"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "crmv" | "cpf" | "userId">
 
 export type VetOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   crmv?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   _count?: Prisma.VetCountOrderByAggregateInput
   _max?: Prisma.VetMaxOrderByAggregateInput
@@ -222,64 +233,72 @@ export type VetScalarWhereWithAggregatesInput = {
   OR?: Prisma.VetScalarWhereWithAggregatesInput[]
   NOT?: Prisma.VetScalarWhereWithAggregatesInput | Prisma.VetScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Vet"> | string
-  name?: Prisma.StringWithAggregatesFilter<"Vet"> | string
   crmv?: Prisma.StringWithAggregatesFilter<"Vet"> | string
   cpf?: Prisma.StringWithAggregatesFilter<"Vet"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Vet"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Vet"> | Date | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Vet"> | string
 }
 
 export type VetCreateInput = {
   id?: string
-  name: string
   crmv: string
   cpf: string
-  user: Prisma.UserCreateNestedOneWithoutVetsInput
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
+  user: Prisma.UserCreateNestedOneWithoutVetInput
 }
 
 export type VetUncheckedCreateInput = {
   id?: string
-  name: string
   crmv: string
   cpf: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
   userId: string
 }
 
 export type VetUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   crmv?: Prisma.StringFieldUpdateOperationsInput | string
   cpf?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneRequiredWithoutVetsNestedInput
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutVetNestedInput
 }
 
 export type VetUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   crmv?: Prisma.StringFieldUpdateOperationsInput | string
   cpf?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type VetCreateManyInput = {
   id?: string
-  name: string
   crmv: string
   cpf: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
   userId: string
 }
 
 export type VetUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   crmv?: Prisma.StringFieldUpdateOperationsInput | string
   cpf?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type VetUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   crmv?: Prisma.StringFieldUpdateOperationsInput | string
   cpf?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -290,25 +309,28 @@ export type VetNullableScalarRelationFilter = {
 
 export type VetCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   crmv?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
 export type VetMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   crmv?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
 export type VetMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   crmv?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
 }
 
@@ -346,16 +368,18 @@ export type VetUncheckedUpdateOneWithoutUserNestedInput = {
 
 export type VetCreateWithoutUserInput = {
   id?: string
-  name: string
   crmv: string
   cpf: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type VetUncheckedCreateWithoutUserInput = {
   id?: string
-  name: string
   crmv: string
   cpf: string
+  createdAt?: Date | string
+  deletedAt?: Date | string | null
 }
 
 export type VetCreateOrConnectWithoutUserInput = {
@@ -376,56 +400,62 @@ export type VetUpdateToOneWithWhereWithoutUserInput = {
 
 export type VetUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   crmv?: Prisma.StringFieldUpdateOperationsInput | string
   cpf?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type VetUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   crmv?: Prisma.StringFieldUpdateOperationsInput | string
   cpf?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
 
 export type VetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
   crmv?: boolean
   cpf?: boolean
+  createdAt?: boolean
+  deletedAt?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vet"]>
 
 export type VetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
   crmv?: boolean
   cpf?: boolean
+  createdAt?: boolean
+  deletedAt?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vet"]>
 
 export type VetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
   crmv?: boolean
   cpf?: boolean
+  createdAt?: boolean
+  deletedAt?: boolean
   userId?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["vet"]>
 
 export type VetSelectScalar = {
   id?: boolean
-  name?: boolean
   crmv?: boolean
   cpf?: boolean
+  createdAt?: boolean
+  deletedAt?: boolean
   userId?: boolean
 }
 
-export type VetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "crmv" | "cpf" | "userId", ExtArgs["result"]["vet"]>
+export type VetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "crmv" | "cpf" | "createdAt" | "deletedAt" | "userId", ExtArgs["result"]["vet"]>
 export type VetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -443,9 +473,10 @@ export type $VetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    name: string
     crmv: string
     cpf: string
+    createdAt: Date
+    deletedAt: Date | null
     userId: string
   }, ExtArgs["result"]["vet"]>
   composites: {}
@@ -872,9 +903,10 @@ export interface Prisma__VetClient<T, Null = never, ExtArgs extends runtime.Type
  */
 export interface VetFieldRefs {
   readonly id: Prisma.FieldRef<"Vet", 'String'>
-  readonly name: Prisma.FieldRef<"Vet", 'String'>
   readonly crmv: Prisma.FieldRef<"Vet", 'String'>
   readonly cpf: Prisma.FieldRef<"Vet", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Vet", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"Vet", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Vet", 'String'>
 }
     

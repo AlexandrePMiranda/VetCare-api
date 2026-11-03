@@ -3,47 +3,47 @@ import { VetsService } from './vets.service';
 import { CreateVetDto } from './dto/create-vet.dto';
 import { UpdateVetDto } from './dto/update-vet.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileGuard } from '../auth/guards/profile.guard';
-import { Roles } from '../auth/decorator/profiles.decorator';
-import { profile } from '../prisma/enums';
+import { RolesGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorator/role.decorator';
+import { Role } from '../generated/prisma/enums';
 
 @Controller('vets')
 export class VetsController {
   constructor(private readonly vetsService: VetsService) {}
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Post()
   create(@Body() createVetDto: CreateVetDto) {
     return this.vetsService.create(createVetDto);
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN') 
   @Get()
   findAll() {
     return this.vetsService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.vetsService.findOne(id);
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN', 'VET') 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVetDto: UpdateVetDto, @Req() req: { user: { id: string }, profile: profile }) {
-    if (req.profile == 'VET' && req.user.id !== id) {
+  update(@Param('id') id: string, @Body() updateVetDto: UpdateVetDto, @Req() req: { user: { id: string }, role: Role }) {
+    if (req.role == 'VET' && req.user.id !== id) {
       throw new ForbiddenException('Usuário sem permissão.');
       }
 
     return this.vetsService.update(id, updateVetDto);
   }
 
-  @UseGuards(AuthGuard('jwt'), ProfileGuard)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Roles('ADMIN')  
   @Delete(':id')
   remove(@Param('id') id: string) {

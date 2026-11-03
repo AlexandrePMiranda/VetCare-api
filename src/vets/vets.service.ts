@@ -14,7 +14,7 @@ export class VetsService {
     if(!user){
       throw new BadRequestException('Usuário não existe')
     }
-    if(user.profile != "VET"){
+    if(user.role != "VET"){
       throw new BadRequestException("Usuário não pode ser veterinário")
     }
     console.log('checkpoin1')
@@ -52,7 +52,7 @@ export class VetsService {
       if(!user){
         throw new BadRequestException('Usuário não existe')
       }
-      if(user.profile != "VET"){
+      if(user.role != "VET"){
         throw new BadRequestException("Usuário não pode ser veterinário")
       }
     }

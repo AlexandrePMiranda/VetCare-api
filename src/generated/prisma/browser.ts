@@ -28,12 +28,12 @@ export type User = Prisma.UserModel
  */
 export type Vet = Prisma.VetModel
 /**
- * Model Animal
+ * Model PetOwner
  * 
  */
-export type Animal = Prisma.AnimalModel
+export type PetOwner = Prisma.PetOwnerModel
 /**
- * Model Tutor
+ * Model Pet
  * 
  */
-export type Tutor = Prisma.TutorModel
+export type Pet = Prisma.PetModel

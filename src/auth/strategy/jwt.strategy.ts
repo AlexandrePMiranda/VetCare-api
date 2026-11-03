@@ -7,7 +7,7 @@ import { UsersRepository } from '../../users/users.repository';
 interface JwtPayload {
   sub: string;
   email: string;
-  profile: string;
+  role: string;
 }
 
 @Injectable()
@@ -28,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       id: payload.sub,
       email: payload.email,
-      profile: payload.profile,
+      role: payload.role,
     };
   }
 }

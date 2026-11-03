@@ -1,5 +1,6 @@
 import { Expose } from "class-transformer";
-import { profile } from "./../../prisma/enums";
+import { Role } from "../../generated/prisma/enums";
+
 
 export class ResponseUserDto {
   
@@ -10,5 +11,5 @@ export class ResponseUserDto {
   email!: string;
 
   @Expose()
-  role!: profile;
+  role!: Role;
 }

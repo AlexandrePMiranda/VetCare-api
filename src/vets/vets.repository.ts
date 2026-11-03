@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { VetCreateInput, VetUpdateInput } from "../prisma/models";
 import { PrismaService } from "../prisma/prisma.service";
+import { VetCreateInput, VetUpdateInput } from "../generated/prisma/models";
 
 @Injectable()
 export class VetsRepository{

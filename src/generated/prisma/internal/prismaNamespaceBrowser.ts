@@ -53,8 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Vet: 'Vet',
-  Animal: 'Animal',
-  Tutor: 'Tutor'
+  PetOwner: 'PetOwner',
+  Pet: 'Pet'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,9 +75,14 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   email: 'email',
   password: 'password',
-  profile: 'profile'
+  role: 'role',
+  status: 'status',
+  lastAccessAt: 'lastAccessAt',
+  inviteSentAt: 'inviteSentAt',
+  createdAt: 'createdAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -85,37 +90,45 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const VetScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   crmv: 'crmv',
   cpf: 'cpf',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt',
   userId: 'userId'
 } as const
 
 export type VetScalarFieldEnum = (typeof VetScalarFieldEnum)[keyof typeof VetScalarFieldEnum]
 
 
-export const AnimalScalarFieldEnum = {
-  id: 'id',
-  species: 'species',
-  breed: 'breed',
-  sex: 'sex',
-  birth: 'birth',
-  tutorId: 'tutorId'
-} as const
-
-export type AnimalScalarFieldEnum = (typeof AnimalScalarFieldEnum)[keyof typeof AnimalScalarFieldEnum]
-
-
-export const TutorScalarFieldEnum = {
+export const PetOwnerScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
   phone: 'phone',
-  adress: 'adress',
-  cpf: 'cpf'
+  address: 'address',
+  cpf: 'cpf',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt'
 } as const
 
-export type TutorScalarFieldEnum = (typeof TutorScalarFieldEnum)[keyof typeof TutorScalarFieldEnum]
+export type PetOwnerScalarFieldEnum = (typeof PetOwnerScalarFieldEnum)[keyof typeof PetOwnerScalarFieldEnum]
+
+
+export const PetScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  species: 'species',
+  breed: 'breed',
+  sex: 'sex',
+  birthDate: 'birthDate',
+  weight: 'weight',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  deletedAt: 'deletedAt',
+  petOwnerId: 'petOwnerId'
+} as const
+
+export type PetScalarFieldEnum = (typeof PetScalarFieldEnum)[keyof typeof PetScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -132,4 +145,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
