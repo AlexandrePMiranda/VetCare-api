@@ -5,11 +5,15 @@ import { UsersRepository } from './users.repository';
 import { hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from './dto/response-user.dto';
+import { InviteUserDto } from './dto/invite-user.dto';
+import { UserStatus } from '../generated/prisma/enums';
+import { JwtService } from '@nestjs/jwt';
+import { AcceptInviteDto } from './dto/accept-invite.dto';
 
 @Injectable()
 export class UsersService {
 
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(private readonly usersRepository: UsersRepository, private readonly jwtService: JwtService) {}
   
   async create(data: CreateUserDto) {
 
@@ -26,6 +30,30 @@ export class UsersService {
     return plainToInstance(ResponseUserDto, user, {
       excludeExtraneousValues: true,
     });
+  }
+
+  async invite(data: InviteUserDto){
+    
+    if(await this.usersRepository.findByEmail(data.email)){
+      throw new ConflictException('Já existe um usuário com este e-mail');  
+    }
+
+    const user = await this.usersRepository.create({
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      status: UserStatus.PENDING_INVITE,
+      inviteSentAt: new Date()
+    });
+
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      porpose: 'invite'
+    }
+    const inviteToken = await this.jwtService.sign(payload)
+    return { data: `https://vetcare-aal.vercel.app/convite/${inviteToken}`}
+
   }
 
   findAll() {

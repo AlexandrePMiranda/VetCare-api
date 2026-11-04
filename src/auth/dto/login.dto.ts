@@ -6,7 +6,6 @@ export class LoginDto {
     description: 'Email do usuário',
     example: 'fulano@email.com',
   })
-  @IsEmail({}, { message: 'O email deve ser válido' })
   @IsNotEmpty({ message: 'O email não pode estar vazio' })
   email!: string;
 

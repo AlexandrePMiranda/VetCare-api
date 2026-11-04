@@ -8,6 +8,9 @@ export class ResponseUserDto {
   id!: string;
 
   @Expose()
+  name!: string
+
+  @Expose()
   email!: string;
 
   @Expose()

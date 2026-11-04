@@ -5,6 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../auth/decorator/role.decorator';
 import { RolesGuard } from '../auth/guards/role.guard';
+import { InviteUserDto } from './dto/invite-user.dto';
+import { AcceptInviteDto } from './dto/accept-invite.dto';
 
 @Controller('users')
 export class UsersController {
@@ -13,6 +15,12 @@ export class UsersController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+
+  @Post('invite')
+  invite(@Body() inviteUserDto: InviteUserDto){
+    return this.usersService.invite(inviteUserDto)
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard)
