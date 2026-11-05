@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersRepository } from './users.repository';
@@ -9,11 +9,18 @@ import { InviteUserDto } from './dto/invite-user.dto';
 import { UserStatus } from '../generated/prisma/enums';
 import { JwtService } from '@nestjs/jwt';
 import { AcceptInviteDto } from './dto/accept-invite.dto';
+import { ListUsersDto } from './dto/list-user.dto';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class UsersService {
 
-  constructor(private readonly usersRepository: UsersRepository, private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly usersRepository: UsersRepository, 
+    private readonly jwtService: JwtService,
+    private readonly mailService: MailService) {}
+  
+  PAGE_SIZE = 10
   
   async create(data: CreateUserDto) {
 
@@ -52,12 +59,47 @@ export class UsersService {
       porpose: 'invite'
     }
     const inviteToken = await this.jwtService.sign(payload)
-    return { data: `https://vetcare-aal.vercel.app/convite/${inviteToken}`}
-
+    this.mailService.sendConfirmationEmail(data.email, inviteToken)
+    return HttpStatus.CREATED
   }
 
-  findAll() {
-    return this.usersRepository.getAllUsers();
+  async deactivate(id: string){
+    if (!await this.usersRepository.findById(id)){
+      throw new BadRequestException('Usuário não existe')
+    }
+    await this.usersRepository.update(id,{status: 'DEACTIVATED'})
+  }
+
+  async refresh(id: string){
+    const user = await this.usersRepository.findById(id)
+    if(!user){
+      throw new ConflictException('usuário não existe')
+    }
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }
+  }
+
+  async findAll({ search, page }: ListUsersDto) {
+    const currentPage = page ?? 1;
+
+    const [data, total] = await Promise.all([
+      this.usersRepository.findMany({
+        search,
+        skip: (currentPage - 1) * this.PAGE_SIZE,
+        take: this.PAGE_SIZE,
+      }),
+      this.usersRepository.count(search),
+    ]);
+
+    return {
+      data,
+      total,
+      pageSize: this.PAGE_SIZE
+    };
   }
 
   async findOne(id: string) {
@@ -76,7 +118,14 @@ export class UsersService {
     if(!user){
       throw new BadRequestException('Usuário não existe')
     }
-    return await this.usersRepository.update(user.id, updateUserDto);
+    const updatedUser = await this.usersRepository.update(user.id, updateUserDto)
+
+    return {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role
+    };
   }
 
   async remove(id: string) {

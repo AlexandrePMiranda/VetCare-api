@@ -21,9 +21,11 @@ export class AuthService {
     const usuario = await this.authRepository.findUserByEmail(
       credenciais.email,
     );
-
     if (!usuario) {
       throw new UnauthorizedException('e-mail e/ou senha incorretos.');
+    }
+    if(usuario.status!== 'ACTIVE'){
+      throw new UnauthorizedException;
     }
     if (!usuario.password){
       throw new BadRequestException;
@@ -37,11 +39,14 @@ export class AuthService {
       throw new UnauthorizedException('E-mail e/ou senha incorretos.');
     }
 
+    await this.authRepository.update(usuario.id,{lastAccessAt: new Date()})
+
     const payload = {
       sub: usuario.id,
       name: usuario.name,
       email: usuario.email,
       role: usuario.role,
+      status: usuario.status
     };
 
     const accessToken = this.jwtService.sign(payload);
@@ -63,8 +68,6 @@ export class AuthService {
     }
     const user = await this.authRepository.findUserByEmail(payload.email);
     if (payload.porpose !== 'invite' ||  !user || user.status !== UserStatus.PENDING_INVITE) {
-      console.log(payload.porpose)
-      console.log(user)
       throw new BadRequestException('Convite inválido ou expirado');
     }
 
@@ -73,12 +76,14 @@ export class AuthService {
     await this.authRepository.update(user.id, {
       password: passwordHash,
       status: UserStatus.ACTIVE,
+      lastAccessAt: new Date()
     });
     const newpayload = {
           sub: user.id,
           name: user.name,
           email: user.email,
           role: user.role,
+          status: user.status
         }
     const accessToken = this.jwtService.sign(newpayload);
    

@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { TutorsModule } from './tutors/tutors.module';
 import { VetsModule } from './vets/vets.module';
+import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
@@ -21,11 +23,14 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: process.env.OBSERVE_APP_SECRET ?? 'YOUR_APP_SECRET',
       serviceId: 'vetcare-api',
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
+    
     UsersModule,
     AuthModule,
     VetsModule,
     TutorsModule,
     PrismaModule,
+    MailModule
   ],
   controllers: [AppController],
   providers: [AppService],

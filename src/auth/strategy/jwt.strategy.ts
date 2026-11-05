@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { StringValue } from 'ms';
 import { UsersRepository } from '../../users/users.repository';
+import { UserStatus } from '../../generated/prisma/enums';
 
 interface JwtPayload {
   sub: string;
   email: string;
   role: string;
+  status: UserStatus
 }
 
 @Injectable()
@@ -21,14 +23,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.usersRepository.findById(payload.sub);
-    if (!user) {
-      throw new Error('User not found');
-    }
-    return {
-      id: payload.sub,
-      email: payload.email,
-      role: payload.role,
-    };
+  const user = await this.usersRepository.findById(payload.sub);
+
+  if (!user) {
+    throw new UnauthorizedException('User not found');
   }
+
+  return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+  };
+}
 }
