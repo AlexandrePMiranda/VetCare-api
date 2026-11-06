@@ -48,7 +48,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard('jwt'), RolesGuard, StatusGuard)
-  @Roles('ADMIN', 'VET')
+  @Roles('ADMIN')
   @AllowedStatus('ACTIVE')
   @Get()
   findAll(@Query() query: ListUsersDto) {
