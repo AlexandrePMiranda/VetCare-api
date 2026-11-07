@@ -3,11 +3,12 @@ import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AuthRepository } from './auth.repository';
-import { AcceptInviteDto } from '../users/dto/accept-invite.dto';
+import { AcceptInviteDto } from './dto/accept-invite.dto';
 import { UserStatus } from '../generated/prisma/enums';
 import { hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { ResponseUserDto } from '../users/dto/response-user.dto';
+import { LoginResponseDto } from './dto/login-response.dto';
 
 
 @Injectable()
@@ -50,10 +51,8 @@ export class AuthService {
     };
 
     const accessToken = this.jwtService.sign(payload);
-
-    return { access_token: accessToken, user: plainToInstance(ResponseUserDto, usuario, {
-    excludeExtraneousValues: true,
-  })};
+    const res: LoginResponseDto = { access_token: accessToken, user: plainToInstance(ResponseUserDto, usuario, {excludeExtraneousValues: true })};
+    return res;
   }
   async acceptInvite(acceptIviteDto: AcceptInviteDto, token: string){
     let payload: { sub: string, email: string, porpose: string };
@@ -86,10 +85,9 @@ export class AuthService {
           status: user.status
         }
     const accessToken = this.jwtService.sign(newpayload);
-   
-    return { access_token: accessToken, user: plainToInstance(ResponseUserDto, user, {
-    excludeExtraneousValues: true,
-  })};
+
+    const res: LoginResponseDto = { access_token: accessToken, user: plainToInstance(ResponseUserDto, user, {excludeExtraneousValues: true })};
+    return res
   }
 }
 

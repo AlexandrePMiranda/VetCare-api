@@ -8,10 +8,12 @@ import { ResponseUserDto } from './dto/response-user.dto';
 import { InviteUserDto } from './dto/invite-user.dto';
 import { UserStatus } from '../generated/prisma/enums';
 import { JwtService } from '@nestjs/jwt';
-import { AcceptInviteDto } from './dto/accept-invite.dto';
+import { AcceptInviteDto } from '../auth/dto/accept-invite.dto';
 import { ListUsersDto } from './dto/list-user.dto';
 import { MailService } from '../mail/mail.service';
+import { ResponseUserByIdDto } from './dto/response-user-byId.dto';
 
+  const PAGE_SIZE = 10
 @Injectable()
 export class UsersService {
 
@@ -20,7 +22,7 @@ export class UsersService {
     private readonly jwtService: JwtService,
     private readonly mailService: MailService) {}
   
-  PAGE_SIZE = 10
+
   
   async create(data: CreateUserDto) {
 
@@ -75,12 +77,7 @@ export class UsersService {
     if(!user){
       throw new ConflictException('usuário não existe')
     }
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    }
+    return plainToInstance(ResponseUserDto, user, {excludeExtraneousValues:true})
   }
 
   async findAll({ search, page }: ListUsersDto) {
@@ -89,16 +86,18 @@ export class UsersService {
     const [data, total] = await Promise.all([
       this.usersRepository.findMany({
         search,
-        skip: (currentPage - 1) * this.PAGE_SIZE,
-        take: this.PAGE_SIZE,
+        skip: (currentPage - 1) * PAGE_SIZE,
+        take: PAGE_SIZE,
       }),
       this.usersRepository.count(search),
     ]);
 
+    const pageSize = PAGE_SIZE
     return {
       data,
       total,
-      pageSize: this.PAGE_SIZE
+      page: currentPage,
+      pageSize
     };
   }
 
@@ -109,7 +108,7 @@ export class UsersService {
     if(!user){
       throw new BadRequestException('Usuário não existe')
     }
-    return user;
+    return plainToInstance(ResponseUserByIdDto, user, {excludeExtraneousValues: true} );
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -120,12 +119,7 @@ export class UsersService {
     }
     const updatedUser = await this.usersRepository.update(user.id, updateUserDto)
 
-    return {
-      id: updatedUser.id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      role: updatedUser.role
-    };
+    return plainToInstance(ResponseUserDto, user, {excludeExtraneousValues: true})
   }
 
   async remove(id: string) {

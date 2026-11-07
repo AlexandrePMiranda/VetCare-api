@@ -49,8 +49,8 @@ export class PetOwnerRepository {
       }),
       this.prisma.petOwner.count({ where }),
     ]);
-
-    return { data, total, page, PAGE_SIZE };
+    const pageSize = PAGE_SIZE
+    return { data, total, page, pageSize };
   }
 
   findById(id: string) {

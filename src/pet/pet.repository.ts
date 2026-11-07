@@ -36,8 +36,9 @@ export class PetRepository {
       }),
       this.prisma.pet.count({ where }),
     ]);
+    const pageSize = PAGE_SIZE
 
-    return { data, total, page, PAGE_SIZE};
+    return { data, total, page, pageSize};
   }
 
   findById(id: string) {
